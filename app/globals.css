@@ -3,6 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --muted: #cbd5e1;
+  --code-bg: #f3f4f6;
 }
 
 @theme inline {
@@ -16,6 +18,8 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --muted: #333333;
+    --code-bg: rgba(255,255,255,0.04);
   }
 }
 
@@ -23,4 +27,19 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Ensure tutorial headings use the foreground color for sufficient contrast */
+.tutorial h1,
+.tutorial h2,
+.tutorial h3,
+.tutorial h4 {
+  color: var(--foreground);
+}
+
+/* Code snippets and pre blocks inside tutorial should have high contrast */
+.tutorial code,
+.tutorial pre {
+  color: var(--foreground);
+  background: var(--code-bg);
 }
