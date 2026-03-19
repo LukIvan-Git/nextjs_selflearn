@@ -26,3 +26,9 @@ If you'd like, I can:
 
 - Add side-by-side Vue snippets for direct comparison in the page.
 - Add tests or TypeScript checks and run them.
+
+TypeScript resources (added):
+
+- Official: https://www.typescriptlang.org/docs/
+- React + TS cheatsheet: https://react-typescript-cheatsheet.netlify.app/
+- Next.js TypeScript: https://nextjs.org/docs/basic-features/typescript

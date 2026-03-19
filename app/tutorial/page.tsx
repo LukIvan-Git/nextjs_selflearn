@@ -1,5 +1,6 @@
 "use client"
 import React from "react";
+import Link from "next/link";
 import PropsExample from "./components/PropsExample";
 import Counter from "./components/Counter";
 import FormExample from "./components/FormExample";
@@ -37,6 +38,16 @@ export default function TutorialPage(): React.JSX.Element {
           Controlled inputs keep the value in React state and update it on change — similar to Vue's <code>v-model</code>.
         </p>
         <FormExample />
+      </section>
+
+      <section style={{marginTop: 20}}>
+        <h2>4 — TypeScript with React</h2>
+        <p>
+          Learn how to add types to your components, props, hooks and API responses. See a short hands-on example and links to the official docs.
+        </p>
+        <p style={{marginTop: 8}}>
+          <Link href="/tutorial/typescript" style={{color: '#0366d6'}}>Open the TypeScript tutorial →</Link>
+        </p>
       </section>
 
       <footer style={{marginTop: 40, color: '#444'}}>

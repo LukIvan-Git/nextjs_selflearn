@@ -1,5 +1,6 @@
 "use client"
 import React, { JSX, useState } from "react";
+import { submitForm } from "../../../lib/api";
 
 type FormState = {
   name: string;
@@ -8,15 +9,30 @@ type FormState = {
 
 export default function FormExample(): React.JSX.Element {
   const [form, setForm] = useState<FormState>({ name: "", email: "" });
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [responseText, setResponseText] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Submitted: ${JSON.stringify(form)}`);
+    setSubmitting(true);
+    setResponseText(null);
+    try {
+      const result = await submitForm(form);
+      if (!result.ok) {
+        setResponseText(`Error: ${result.error ?? 'Unknown'}`);
+      } else {
+        setResponseText(JSON.stringify(result.data));
+      }
+    } catch (err: any) {
+      setResponseText(`Error: ${err?.message ?? String(err)}`);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -46,14 +62,19 @@ export default function FormExample(): React.JSX.Element {
         </div>
       </form>
 
-      <div style={{marginTop: 12, fontSize: 13}}>
-        <strong>Current state:</strong>
-        <pre style={{background: '#f3f4f6', padding: 8, color: '#111'}}>{JSON.stringify(form, null, 2)}</pre>
-      </div>
+        <div style={{marginTop: 12, fontSize: 13}}>
+          <strong>Current state:</strong>
+          <pre style={{background: '#f3f4f6', padding: 8, color: '#111'}}>{JSON.stringify(form, null, 2)}</pre>
+        </div>
 
-      <div style={{marginTop: 8, fontSize: 13, color: '#333'}}>
-        <p style={{margin: 0}}>Vue's <code style={{background: '#f3f4f6', padding: '2px 6px'}}>v-model</code> binds input to component data. React uses controlled inputs with state and change handlers.</p>
-      </div>
+        <div style={{marginTop: 8, fontSize: 13, color: '#333'}}>
+          <p style={{margin: 0}}>Vue's <code style={{background: '#f3f4f6', padding: '2px 6px'}}>v-model</code> binds input to component data. React uses controlled inputs with state and change handlers.</p>
+        </div>
+
+        <div style={{marginTop: 10}}>
+          <strong>Server response:</strong>
+          <div style={{marginTop: 6}}>{submitting ? 'Submitting...' : responseText ?? 'No response yet.'}</div>
+        </div>
     </div>
   );
 }
