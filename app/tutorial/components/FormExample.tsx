@@ -1,6 +1,6 @@
 "use client"
 import React, { JSX, useState } from "react";
-import { submitForm } from "../../../lib/api";
+import axios from 'axios';
 
 type FormState = {
   name: string;
@@ -22,14 +22,11 @@ export default function FormExample(): React.JSX.Element {
     setSubmitting(true);
     setResponseText(null);
     try {
-      const result = await submitForm(form);
-      if (!result.ok) {
-        setResponseText(`Error: ${result.error ?? 'Unknown'}`);
-      } else {
-        setResponseText(JSON.stringify(result.data));
-      }
+      const res = await axios.post('/api/submit', form, { headers: { 'Content-Type': 'application/json' } });
+      setResponseText(JSON.stringify(res.data));
     } catch (err: any) {
-      setResponseText(`Error: ${err?.message ?? String(err)}`);
+      if (err.response) setResponseText(`Error: ${JSON.stringify(err.response.data)}`);
+      else setResponseText(`Error: ${err?.message ?? String(err)}`);
     } finally {
       setSubmitting(false);
     }
